@@ -44,7 +44,7 @@ namespace AwesomePlatformer
 
         List<Enemy> enemies = new List<Enemy>();
         Sprite goal = null;
-
+        TiledObject SpikeBox = null;
       
 
 
@@ -72,8 +72,8 @@ namespace AwesomePlatformer
         
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            player = new Player(this);
+            
+           
 
             base.Initialize();
         }
@@ -111,6 +111,7 @@ namespace AwesomePlatformer
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
             {
                 gameState = STATE_WIN;
+                ResetGame();
             }
         }
 
@@ -119,6 +120,7 @@ namespace AwesomePlatformer
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
             {
                 gameState = STATE_SPLASH;
+                ResetGame();
             }
         }
 
@@ -127,7 +129,7 @@ namespace AwesomePlatformer
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
             {
                 gameState = STATE_GAME;
-                    
+                
             }
         }
         private void DrawGameState(SpriteBatch spriteBatch)
@@ -174,15 +176,24 @@ namespace AwesomePlatformer
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player.Load(Content);
+           
 
             arialFont = Content.Load<SpriteFont>("Arial");
             heart = Content.Load<Texture2D>("Heart");
             medal = Content.Load<Texture2D>("Medal");
 
+            
+            ResetGame();
+        }
+
+        private void ResetGame()
+        {
+            player = new Player(this);
+            player.Load(Content);
+
             var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice,
-                (int)(2.2*graphics.GraphicsDevice.Viewport.Width),
-                (int)(2.2*graphics.GraphicsDevice.Viewport.Height));
+               (int)(2.2 * graphics.GraphicsDevice.Viewport.Width),
+               (int)(2.2 * graphics.GraphicsDevice.Viewport.Height));
             camera = new Camera2D(viewportAdapter);
             camera.Position = new Vector2(0, graphics.GraphicsDevice.Viewport.Height);
 
@@ -193,6 +204,8 @@ namespace AwesomePlatformer
                     collisionLayer = layer;
             }
 
+            enemies.Clear();
+            
             foreach (TiledObjectGroup group in map.ObjectGroups)
             {
                 if (group.Name == "Enemies")
@@ -203,6 +216,14 @@ namespace AwesomePlatformer
                         enemy.Load(Content);
                         enemy.Position = new Vector2(obj.X, obj.Y);
                         enemies.Add(enemy);
+                    }
+                }
+                if (group.Name == "Spike Hit")
+                {
+                    foreach (TiledObject obj in group.Objects)
+                    {
+                        SpikeBox = obj;
+
                     }
                 }
                 if (group.Name == "Goal")
@@ -224,7 +245,6 @@ namespace AwesomePlatformer
             MediaPlayer.Play(gameMusic);
 
         }
-
 
 
         protected override void UnloadContent()
@@ -311,17 +331,22 @@ namespace AwesomePlatformer
                 }
             }
 
+            Rectangle rec = new Rectangle((int)SpikeBox.X, (int)SpikeBox.Y, (int)SpikeBox.Width, (int)SpikeBox.Height);
+            if (IsColliding(player.Bounds, rec) == true)
+            {
+                gameState = STATE_GAMEOVER;
+            }
+
             if (hasCollidedEnemies == false)
             {
                 player.canTakeDamage = true;
             }
+
+            
+            
         }
 
-        private void ResetGame()
-        {
-
-
-        }
+        
 
         
 
