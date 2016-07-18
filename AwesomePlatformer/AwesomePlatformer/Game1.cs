@@ -30,6 +30,7 @@ namespace AwesomePlatformer
         const int STATE_SPLASH = 0;
         const int STATE_GAME = 1;
         const int STATE_GAMEOVER = 2;
+        const int STATE_WIN = 3;
         int gameState = STATE_SPLASH;
 
         Texture2D medal = null;
@@ -79,15 +80,46 @@ namespace AwesomePlatformer
 
         private void DrawSplashState(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(arialFont, "Press Enter to Play",
+            spriteBatch.Begin();
+
+            spriteBatch.DrawString(arialFont, "Kill The Zombie Peas",
                             new Vector2(335, 200), Color.White);
 
+            spriteBatch.DrawString(arialFont, "Press Enter to Play",
+                            new Vector2(340, 250), Color.White);
+            spriteBatch.End();
         }
 
         private void DrawGameOverState(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
             spriteBatch.DrawString(arialFont, "Game Over", new Vector2(360, 200),
                                     Color.White);
+            spriteBatch.End();
+        }
+
+        private void DrawYouWinState(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+            spriteBatch.DrawString(arialFont, "You Win", new Vector2(360, 200),
+                                    Color.White);
+            spriteBatch.End();
+        }
+
+        private void UpdateYouWinState(float deltaTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
+            {
+                gameState = STATE_WIN;
+            }
+        }
+
+        private void UpdateGameOverState(float deltaTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
+            {
+                gameState = STATE_SPLASH;
+            }
         }
 
         private void UpdateSplashState(float deltaTime)
@@ -98,6 +130,44 @@ namespace AwesomePlatformer
                     
             }
         }
+        private void DrawGameState(SpriteBatch spriteBatch)
+        {
+            // TODO: Add your drawing code here
+
+            var transformMatrix = camera.GetViewMatrix();
+
+            spriteBatch.Begin(transformMatrix: transformMatrix);
+
+            map.Draw(spriteBatch);
+            foreach (Enemy e in enemies)
+            {
+                e.Draw(spriteBatch);
+            }
+            goal.Draw(spriteBatch);
+
+            player.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
+
+            for (int i = 0; i < score; i++)
+            {
+                spriteBatch.Draw(medal, new Vector2(10 + i * 10,
+               20), Color.White);
+            }
+
+            for (int i = 0; i < lives; i++)
+            {
+                spriteBatch.Draw(heart, new Vector2(ScreenWidth - 80 - i * 20,
+               20), Color.White);
+            }
+
+
+            spriteBatch.End();
+        }
+
+      
+        
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -175,11 +245,24 @@ namespace AwesomePlatformer
                 case STATE_GAME:
                     UpdateGameState(deltaTime);
                     break;
-                //case STATE_GAMEOVER:
-                //    UpdateGameOverState(deltaTime);
-                //    break;
+                case STATE_GAMEOVER:
+                    UpdateGameOverState(deltaTime);
+                    break;
+                case STATE_WIN:
+                    UpdateYouWinState(deltaTime);
+                    break;
             }
             base.Update(gameTime);
+
+            if (lives == 0)
+            {
+                
+                gameState = STATE_GAMEOVER;
+            }            
+            if (enemies.Count == 0)
+            {
+                gameState = STATE_WIN;
+            }
         }
 
         protected void UpdateGameState(float deltaTime)
@@ -220,12 +303,17 @@ namespace AwesomePlatformer
                     {
                         if (player.canTakeDamage)
                         {
-                            lives = lives + 1;
+                            lives = lives - 1;
                             player.canTakeDamage = false;
 
                         }
                     }
                 }
+            }
+
+            if (hasCollidedEnemies == false)
+            {
+                player.canTakeDamage = true;
             }
         }
 
@@ -255,39 +343,23 @@ namespace AwesomePlatformer
         {
             GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
-
-            var transformMatrix = camera.GetViewMatrix();
-
-            spriteBatch.Begin(transformMatrix: transformMatrix);
-
-             map.Draw(spriteBatch);
-            foreach (Enemy e in enemies) {
-                e.Draw(spriteBatch);
-            }
-            goal.Draw(spriteBatch);
-           
-            player.Draw(spriteBatch);
-            spriteBatch.End();
-
-            spriteBatch.Begin();
-
-            for (int i = 0; i < score; i++)
+            switch (gameState)
             {
-                spriteBatch.Draw(medal, new Vector2(10 + i * 10,
-               20), Color.White);
+                case STATE_SPLASH:
+                    DrawSplashState(spriteBatch);
+                    break;
+                case STATE_GAME:
+                    DrawGameState(spriteBatch);
+                    break;
+                case STATE_GAMEOVER:
+                    DrawGameOverState(spriteBatch);
+                    break;
+                case STATE_WIN:
+                    DrawYouWinState(spriteBatch);
+                    break;
             }
 
-            for (int i = 0; i < lives; i++)
-            {
-                spriteBatch.Draw(heart, new Vector2(ScreenWidth - 80 - i * 20,
-               20), Color.White);
-            }
-
-            spriteBatch.DrawString(arialFont, "Hello MonoGame!",
-                new Vector2(10, 50), Color.White);
-
-            spriteBatch.End();
+            
 
 
             base.Draw(gameTime);
