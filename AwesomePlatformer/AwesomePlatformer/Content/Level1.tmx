@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="150" tilewidth="64" tileheight="64" nextobjectid="82">
+ <tileset firstgid="1" name="Tileset" tilewidth="64" tileheight="64" tilecount="72" columns="8">
+  <image source="Tileset.png" width="512" height="576"/>
+ </tileset>
+ <layer name="Background" width="150" height="150">
+  <data encoding="base64" compression="zlib">
+   eJzt2EtuwlAUBFFPPWRN7H9PETOE8ukE3zR+nJoUAiSsdgnQ2zYAAAAAAAAAAAAAAAAAAAAAAAAAAIBZ9rvHl9pV4Czcernwy3gV2juyrlhXKe0dWVesq5T2jqwr1lVKe0fWFesqpb0j64p1ldLekXXFukpp78i6Yl2ltHdkXbGuUto7sq5YVyntHVlXrKuU9o6sK9ZVSntH1hXrKqW9I+uKdZXS3pF1xbpKae/IumJdpbR3ZF2xrlLaO7KuWFcp7R1ZV6yrlPaOrCvWVUp7R9YV6yqlvSPrinWV0t6RdcW6SmnvyLpiXaW0d2Rdsa5S2juyrlhXKe0dWVesq5T2jqwr1lVKe0fWFesqpb0j64p1ldLekXXFukpp78i6Yl2ltHdkXbGuUto7sq5YVyntHVlXrKuU9o6sK9ZVSntH1hXrKqW9I+uKdZXS3pF1xbpK2Lf+jrxeVzfaO57F13/6nFVo369JX1/kOnTFba9Ce0fWFesqpb0j64p1ldLekXXFukpp73h2H31eugrt+8K6avmM5+a6WuP3YxWvQntH1hXrKqW9I+uKdZXS3pF1xbpKae/Ia3f1m/OkLXwfv29XCfc9ffX6Z8+9206YZ9++bxH4C7rCBLrCBLrCBLrCBPumLRzPvmkLx/HYk77wLD81pS88g64wgZYwgZ5wNL6nMIWuMIHvLByJ/+uYwPkVptAWptAPptAVJtAUJtAVJtAVJtAVJtDVa/IBu7v8eQ==
+  </data>
+ </layer>
+ <layer name="Collisions" width="150" height="150">
+  <data encoding="base64" compression="zlib">
+   eJzt2UFP2gAAhuGe3W3uMjMPHvYjtiz+/5+lREm0QZyFt5T2eZLvIklL6BvAcjsMw62ZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZ2QL2Y2Apvg+X70FX66MrCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgKwq6oqArCrqioCsKuqKgq/X487y/oz1e6LnoajvG3ZXN6WqZDr33lE2cuzld8Zkpn6+6oqArzuFmeP8+pqt1GV/fuc73b/R3Xa3DR9f3UufT1XVbWk97urpO+//R5urpq+fT1XXYXdf6O9M572HpajnmuB8+1z13XR23+z7x7Xn3Jxzj2L3zS/1+V9PVYfue7l6P/Xv0+Ny/s1wbXb037mm/cVccp6sXH/Wkq2m23tVnPelqmq129b896WqarXX11Z50Nc1Wuprak66mWXtXp/akq2nW1NWv4aWhtzu1p7dd/TxwfDu8c73ua9+uq4cFPA9b13RlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXRlxXS1zD0BzEzSNg==
+  </data>
+ </layer>
+ <layer name="Spikes" width="150" height="150">
+  <data encoding="base64" compression="zlib">
+   eJztwzEJAAAMA7Cam39Ls9C7JJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC2nHUAAAAAAAAAAAAAAAAAAIB1D7eLFDg=
+  </data>
+ </layer>
+ <objectgroup color="#a00000" name="Enemies">
+  <object id="61" x="5190.7" y="6657.64"/>
+  <object id="64" x="3545.76" y="7360.85"/>
+  <object id="67" x="5780" y="6529.67"/>
+  <object id="68" x="5975.33" y="6528.33"/>
+  <object id="69" x="6358" y="6595.67"/>
+  <object id="70" x="6824.33" y="6656.67"/>
+  <object id="71" x="7221.67" y="6720"/>
+  <object id="73" x="6877.67" y="7171"/>
+  <object id="74" x="6468.33" y="7232.33"/>
+  <object id="76" x="4430.33" y="7298"/>
+  <object id="77" x="4834" y="7234"/>
+  <object id="78" x="4154.33" y="7296.33"/>
+  <object id="79" x="5037" y="6658"/>
+  <object id="80" x="5361" y="6659"/>
+  <object id="81" x="5184" y="7170"/>
+ </objectgroup>
+ <objectgroup color="#00a000" name="Goal">
+  <object id="62" x="4908.64" y="6651.58"/>
+ </objectgroup>
+</map>
