@@ -39,6 +39,6 @@
   <object id="62" x="4908.64" y="6651.58"/>
  </objectgroup>
  <objectgroup name="Spike Hit">
-  <object id="85" x="3133.33" y="7875.76" width="4800" height="54.5455"/>
+  <object id="85" x="3133.33" y="7916" width="4800" height="14.3055"/>
  </objectgroup>
 </map>

@@ -7,6 +7,7 @@ using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace AwesomePlatformer
 {
@@ -31,6 +32,7 @@ namespace AwesomePlatformer
         const int STATE_GAME = 1;
         const int STATE_GAMEOVER = 2;
         const int STATE_WIN = 3;
+        const int STATE_GAMEOVERSPIKE = 4;
         int gameState = STATE_SPLASH;
 
         Texture2D medal = null;
@@ -93,11 +95,24 @@ namespace AwesomePlatformer
         private void DrawGameOverState(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+            spriteBatch.DrawString(arialFont, "Come On Their Just Peas",
+                            new Vector2(315, 250), Color.White);
             spriteBatch.DrawString(arialFont, "Game Over", new Vector2(360, 200),
                                     Color.White);
             spriteBatch.End();
         }
 
+        private void DrawGameOverSpikeState(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+            spriteBatch.DrawString(arialFont, "Death By Spikes",
+                            new Vector2(345, 250), Color.White);
+            spriteBatch.DrawString(arialFont, "Ouch!",
+                            new Vector2(380, 270), Color.White);
+            spriteBatch.DrawString(arialFont, "Game Over", new Vector2(360, 200),
+                                    Color.White);
+            spriteBatch.End();
+        }
         private void DrawYouWinState(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
@@ -110,7 +125,18 @@ namespace AwesomePlatformer
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
             {
-                gameState = STATE_WIN;
+                
+                gameState = STATE_GAME;
+                ResetGame();
+            }
+        }
+
+        private void UpdateGameOverSpikeState(float deltaTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) == true)
+            {
+
+                gameState = STATE_GAME;
                 ResetGame();
             }
         }
@@ -244,6 +270,9 @@ namespace AwesomePlatformer
             gameMusic = Content.Load<Song>("SuperHero_original_no_Intro");
             MediaPlayer.Play(gameMusic);
 
+            lives = 3;
+            score = 0;
+
         }
 
 
@@ -255,7 +284,18 @@ namespace AwesomePlatformer
         protected override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             
+
+            if (lives == 0)
+            {
+                
+                gameState = STATE_GAMEOVER;
+            }            
+            if (enemies.Count == 0)
+            {
+                gameState = STATE_WIN;
+            }
            
             switch (gameState)
             {
@@ -271,18 +311,11 @@ namespace AwesomePlatformer
                 case STATE_WIN:
                     UpdateYouWinState(deltaTime);
                     break;
+                case STATE_GAMEOVERSPIKE:
+                    UpdateGameOverSpikeState(deltaTime);
+                    break;
             }
             base.Update(gameTime);
-
-            if (lives == 0)
-            {
-                
-                gameState = STATE_GAMEOVER;
-            }            
-            if (enemies.Count == 0)
-            {
-                gameState = STATE_WIN;
-            }
         }
 
         protected void UpdateGameState(float deltaTime)
@@ -298,8 +331,7 @@ namespace AwesomePlatformer
             }
             camera.Position = player.Position - new Vector2(ScreenWidth, ScreenHeight);
 
-            CheckCollisions();
-            
+            CheckCollisions();           
         }
 
        
@@ -334,7 +366,7 @@ namespace AwesomePlatformer
             Rectangle rec = new Rectangle((int)SpikeBox.X, (int)SpikeBox.Y, (int)SpikeBox.Width, (int)SpikeBox.Height);
             if (IsColliding(player.Bounds, rec) == true)
             {
-                gameState = STATE_GAMEOVER;
+                gameState = STATE_GAMEOVERSPIKE;
             }
 
             if (hasCollidedEnemies == false)
@@ -381,6 +413,9 @@ namespace AwesomePlatformer
                     break;
                 case STATE_WIN:
                     DrawYouWinState(spriteBatch);
+                    break;
+                case STATE_GAMEOVERSPIKE:
+                    DrawGameOverSpikeState(spriteBatch);
                     break;
             }
 
